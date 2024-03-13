@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    body {
+        background: url("https://www.pixel4k.com/wp-content/uploads/2020/01/lake-near-house-winter_1578254754.jpg.webp");
+        background-size: cover;
+    }
+
+    .login-box {
+        color: wheat;
+    }
+
+    label {
+        color: white;
+    }
+
+    .back {
+        padding: 10px 30px;
+        margin: 0 auto;
+        border-radius: 12px;
+        display: block;
+        background-color: yellowgreen;
+    }
+
+    .back:hover {
+        background-color: yellow;
+    }
+
+    .upd {
+        padding: 10px 30px;
+        margin: 0 auto;
+        border-radius: 12px;
+        display: block;
+        background-color: green;
+    }
+
+    .upd:hover {
+        background-color: yellow;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Update User</title>
+</head>
+<body>
+<div class="login-box" style="text-align:center; margin-top:40px; font-size: 30px;">
+    <h2>Update a user</h2>
+    <form action="#"
+          th:method="POST"
+          th:action="@{/users/update(id=${userUpdate.getId()})}"
+          th:object="${userUpdate}"
+          style="text-align:center; margin-top:30px; font-size: 30px;">
+
+        <div class="user-box">
+            <label>User name</label>
+            <label>
+                <input type="text" th:field="${userUpdate.name}">
+            </label>
+        </div>
+        <div class="user-box">
+            <label>User surname</label>
+            <label>
+                <input type="text" th:field="${userUpdate.surname}">
+            </label>
+        </div>
+        <div class="user-box">
+            <label>User age</label>
+            <label>
+                <input type="text" th:field="${userUpdate.age}">
+            </label>
+        </div>
+        <br>
+        <button class="upd" type="submit" value="Update">Update</button>
+        <div>
+            <br>
+            <input class="back" type="button" value="Go back"
+                   onclick="window.location.href = '/users'">
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -17,7 +17,6 @@ public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(generator = "role_gen", strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(name = "role_gen", sequenceName = "role_seq", allocationSize = 1)
     private Long id;
     private String roleName;
 
@@ -27,6 +26,11 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return null;
+        return roleName;
+    }
+
+    @Override
+    public String toString() {
+        return this.roleName;
     }
 }
