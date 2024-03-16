@@ -30,9 +30,6 @@
 
         .table {
             color: black;
-        }
-
-        .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
@@ -90,11 +87,12 @@
     <thead>
     <tr>
         <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Surname</th>
-        <th scope="col">Age</th>
-        <th scope="col">Update</th>
-        <th scope="col">Delete</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Фамилия</th>
+        <th scope="col">Возраст</th>
+        <th scope="col">Обновление</th>
+        <th scope="col">Удаление</th>
+        <th scope="col">Профиль</th>
     </tr>
     </thead>
     <tbody>
@@ -106,22 +104,32 @@
         <td th:text="${user.age}"></td>
 
         <td>
-            <a class="update" th:href="@{/users/updatePage(id=${user.getId()})}">
-                <button type="submit" style="height: 40px; width: 80px; border-radius: 12px"> UPDATE</button>
+            <a class="update" th:href="@{/admin/updatePage(id=${user.getId()})}">
+                <button type="submit" style="height: 40px; width: 90px; border-radius: 12px"> ОБНОВИТЬ</button>
             </a>
         </td>
         <td>
-            <a class="delete" th:href="@{/users/delete(id=${user.getId()})}">
+            <a class="delete" th:href="@{/admin/delete(id=${user.getId()})}">
                 <button type="submit" style="height: 45px; width: 85px; background-color:red; border-radius: 12px">
-                    DELETE
+                    УДАЛИТЬ
+                </button>
+            </a>
+        </td>
+        <td>
+            <a class="profile" th:href="@{/admin/profile(id=${user.getId()})}">
+                <button type="submit" style="height: 45px; width: 85px; background-color:green; border-radius: 12px">
+                    ПРОФИЛЬ
                 </button>
             </a>
         </td>
     </tr>
     </tbody>
 </table>
-<input type="button" value="Add user" class="add1  btn-outline-success"
-       onclick="window.location.href = 'users/addUser'">
+<input type="button" value="Добавить пользователя" class="add1  btn-outline-success"
+       onclick="window.location.href = 'admin/addUser'">
+<br>
+<input type="button" value="Выйти" class="add1  btn-outline-success"
+       onclick="window.location.href = '/logout'">
 <br>
 </body>
 </html>

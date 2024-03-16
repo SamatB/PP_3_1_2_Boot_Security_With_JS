@@ -5,17 +5,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
+import java.security.Principal;
+
 @Controller
-@RequestMapping("users")
+@RequestMapping("admin")
 public class UserController {
 
     private final UserServiceImpl userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserController(UserServiceImpl userService) {
+    public UserController(UserServiceImpl userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -33,7 +38,7 @@ public class UserController {
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("users") User user) {
         userService.addUser(user);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
     @GetMapping("/updatePage")
@@ -45,13 +50,13 @@ public class UserController {
     @PostMapping("/update")
     public String updateUser(@ModelAttribute("userUpdate") User user, @RequestParam("id") Long id) {
         userService.updateUser(user, id);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
     @GetMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id) {
         userService.deleteUser(id);
-        return "redirect:/users";
+        return "redirect:/admin";
     }
 
     @GetMapping("/profile")
@@ -59,6 +64,20 @@ public class UserController {
         model.addAttribute("user", userService.getUserById(id));
         return "userProfile";
     }
+    @GetMapping("/userProfile")
+    public String userProfile(Model model, Principal principal) {
+        User user = userRepository.findByName(principal.getName()).get();
+        model.addAttribute("user", user);
+        return "userProfile";
+    }
+    @GetMapping("/adminProfile")
+    public String adminProfile(Model model, Principal principal) {
+        User user = userRepository.findByName(principal.getName()).get();
+        model.addAttribute("user", user);
+        return "adminProfile";
+    }
 
+//    @GetMapping
+//    public String userPage()
 
 }

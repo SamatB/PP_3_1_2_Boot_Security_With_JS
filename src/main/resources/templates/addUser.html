@@ -18,6 +18,18 @@
     .back:hover{
         background-color: yellow;
     }
+    .add1 {
+        color: black;
+        background-color: white;
+        padding: 10px 30px;
+        margin: 0 auto;
+        display: block;
+        border-radius: 12px;
+    }
+
+    .add1:hover {
+        background-color: greenyellow;
+    }
 </style>
 <head>
     <meta charset="UTF-8">
@@ -26,19 +38,33 @@
 
 </head>
 <body>
-<form th:action="@{saveUser}"
+<form th:action="@{/admin/saveUser}"
       th:object="${user}"
       method="post"
       style="text-align:center; margin-top:200px; font-size: 30px;">
     <input type="hidden" name = "id" th:field="*{id}">
-    <input type="text"  name="User name" th:field="*{name}" placeholder="User Name">
-    <input type="text"  name="User surname" th:field="*{surname}" placeholder="User surname">
-    <input type="text"  name="User age" th:field="*{age}" placeholder="User age">
+    <label>
+        <input type="text"  name="Name" th:field="*{name}" placeholder="Имя">
+    </label>
+    <label>
+        <input type="text"  name="Surname" th:field="*{surname}" placeholder="Фамилия">
+    </label>
+    <label>
+        <input type="text"  name="Age" th:field="*{age}" placeholder="Возраст">
+    </label>
+    <label>
+        <input type="text"  name="Password" th:field="*{password}" placeholder="Пароль">
+    </label>
     <br>
-    <input class="add" type="submit" value="Add" style="border-radius: 10px">
+    <br>
+    <input class="add" type="submit" value="Добавить" style="border-radius: 10px">
     <br><br>
-    <input type="button"  value="Go back" class="back"
-           onclick="window.location.href = 'users'">
+    <input type="button"  value="Назад" class="back"
+           onclick="window.location.href = '/admin'">
+    <br>
+    <input type="button" value="Выйти" class="add1  btn-outline-success"
+           onclick="window.location.href = '/logout'">
+    <br>
 </form>
 </body>
 </html>

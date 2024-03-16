@@ -37,6 +37,18 @@
     .upd:hover {
         background-color: yellow;
     }
+    .add1 {
+        color: black;
+        background-color: white;
+        padding: 10px 30px;
+        margin: 0 auto;
+        display: block;
+        border-radius: 12px;
+    }
+
+    .add1:hover {
+        background-color: greenyellow;
+    }
 </style>
 <head>
     <meta charset="UTF-8">
@@ -44,37 +56,41 @@
 </head>
 <body>
 <div class="login-box" style="text-align:center; margin-top:40px; font-size: 30px;">
-    <h2>Update a user</h2>
+    <h2>Обновление пользователя</h2>
     <form action="#"
           th:method="POST"
-          th:action="@{/users/update(id=${userUpdate.getId()})}"
+          th:action="@{/admin/update(id=${userUpdate.getId()})}"
           th:object="${userUpdate}"
           style="text-align:center; margin-top:30px; font-size: 30px;">
 
         <div class="user-box">
-            <label>User name</label>
+            <label>Имя</label>
             <label>
                 <input type="text" th:field="${userUpdate.name}">
             </label>
         </div>
         <div class="user-box">
-            <label>User surname</label>
+            <label>Фамилия</label>
             <label>
                 <input type="text" th:field="${userUpdate.surname}">
             </label>
         </div>
         <div class="user-box">
-            <label>User age</label>
+            <label>Возраст</label>
             <label>
                 <input type="text" th:field="${userUpdate.age}">
             </label>
         </div>
         <br>
-        <button class="upd" type="submit" value="Update">Update</button>
+        <button class="upd" type="submit" value="Обновить">Update</button>
         <div>
             <br>
-            <input class="back" type="button" value="Go back"
-                   onclick="window.location.href = '/users'">
+            <input class="back" type="button" value="Назад"
+                   onclick="window.location.href = '/admin'">
+            <br>
+            <input type="button" value="Выйти" class="add1  btn-outline-success"
+                   onclick="window.location.href = '/logout'">
+            <br>
         </div>
     </form>
 </div>
