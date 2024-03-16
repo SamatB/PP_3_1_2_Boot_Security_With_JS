@@ -15,12 +15,10 @@ import java.security.Principal;
 public class UserController {
 
     private final UserServiceImpl userService;
-    private final UserRepository userRepository;
 
     @Autowired
-    public UserController(UserServiceImpl userService, UserRepository userRepository) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
-        this.userRepository = userRepository;
     }
 
     @GetMapping("/admin")
@@ -67,14 +65,14 @@ public class UserController {
 
     @GetMapping("/user/usersProfile")
     public String usersProfile(Model model, Principal principal) {
-        User user = userRepository.findByName(principal.getName()).get();
-        model.addAttribute("user", user);
+        User userByName = userService.getUserByName(principal.getName());
+        model.addAttribute("user", userByName);
         return "usersProfile";
     }
 
     @GetMapping("/admin/adminProfile")
     public String adminProfile(Model model, Principal principal) {
-        User user = userRepository.findByName(principal.getName()).get();
+        User user = userService.getUserByName(principal.getName());
         model.addAttribute("user", user);
         return "adminProfile";
     }
