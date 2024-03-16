@@ -98,7 +98,6 @@
     <tbody>
     <tr th:each="user : ${users}">
         <th scope="row" th:text="${user.id}"></th>
-        /*@thymesVar id="user" type="beganov"*/
         <td th:text="${user.name}"></td>
         <td th:text="${user.surname}"></td>
         <td th:text="${user.age}"></td>
@@ -127,6 +126,9 @@
 </table>
 <input type="button" value="Добавить пользователя" class="add1  btn-outline-success"
        onclick="window.location.href = 'admin/addUser'">
+<br>
+<input type="button" value="Назад" class="add1  btn-outline-success"
+       onclick="window.location.href = 'admin/adminProfile'">
 <br>
 <input type="button" value="Выйти" class="add1  btn-outline-success"
        onclick="window.location.href = '/logout'">
