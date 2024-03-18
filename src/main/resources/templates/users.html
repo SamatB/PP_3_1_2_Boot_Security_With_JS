@@ -7,131 +7,261 @@
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <style>
         body {
-            background: url("https://www.pixel4k.com/wp-content/uploads/2021/08/icleand-journey-4k_1630069025-1536x1024.jpg.webp");
+            background: whitesmoke;
             background-size: cover;
         }
 
-        th, td {
-            color: aliceblue;
+        .main {
+            margin-top: 70px;
+            display: flex;
+            gap: 1rem;
         }
 
-        .add1 {
-            color: black;
-            background-color: white;
-            padding: 10px 30px;
-            margin: 0 auto;
+        .form-label {
+            text-align: center;
             display: block;
-            border-radius: 12px;
-        }
-
-        .add1:hover {
-            background-color: greenyellow;
-        }
-
-        .table {
-            color: black;
-            width: 100%;
-            border: none;
-            margin-bottom: 20px;
-        }
-
-        .table thead th {
             font-weight: bold;
-            text-align: left;
-            border: none;
-            padding: 10px 15px;
-            background: #d8d8d8;
-            font-size: 14px;
         }
 
-        .table thead tr th:first-child {
-            border-radius: 8px 0 0 8px;
+        .add {
+            display: flex;
+            justify-content: center;
         }
 
-        .table thead tr th:last-child {
-            border-radius: 0 8px 8px 0;
-        }
-
-        .table tbody td {
-            text-align: left;
-            border: none;
-            padding: 10px 15px;
-            font-size: 14px;
-            vertical-align: top;
-        }
-
-        .table tbody tr:nth-child(even) {
-            background: darkslategrey;
-        }
-
-        .table tbody tr:nth-child(odd) {
-            background: gray;
-        }
-
-        .table tbody tr td:first-child {
-            border-radius: 8px 0 0 8px;
-        }
-
-        .table tbody tr td:last-child {
-            border-radius: 0 8px 8px 0;
-        }
-
-        th {
-            color: black;
+        .sidebar {
+            height: calc(100vh - 56px);
+            background-color: white;
         }
     </style>
 </head>
 
 <body>
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Возраст</th>
-        <th scope="col">Обновление</th>
-        <th scope="col">Удаление</th>
-        <th scope="col">Профиль</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-        <th scope="row" th:text="${user.id}"></th>
-        <td th:text="${user.name}"></td>
-        <td th:text="${user.surname}"></td>
-        <td th:text="${user.age}"></td>
+<nav class="navbar fixed-top navbar-dark bg-dark">
+    <a class="navbar-brand" href="#"> with roles: ADMIN USER</a>
+    <a type="button" class="btn btn-dark"
+       onclick="window.location.href = '/logout'">Logout</a>
+</nav>
+<div class="main">
+    <div class="col-3 sidebar">
+        <div class="list-group" id="list-tab" role="tablist">
+            <a class="list-group-item list-group-item-action active" id="list-home-list" data-bs-toggle="list"
+               href="#list-home" role="tab" aria-controls="list-home">Admin</a>
+            <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list"
+               href="#list-profile" role="tab" aria-controls="list-profile">User</a>
+        </div>
+    </div>
+    <div class="col-8">
+        <h2>Admin panel</h2>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
+                        type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">User table
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
+                        type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">New user
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
+                 tabindex="0">
+                <div class="card">
+                    <div class="card-header">
+                        All users
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user : ${users}">
+                                <th scope="row" th:text="${user.id}"></th>
+                                <td th:text="${user.name}"></td>
+                                <td th:text="${user.surname}"></td>
+                                <td th:text="${user.age}"></td>
+                                <td th:text="${user.email}"></td>
+                                <td th:text="${user.roles.get(0).getRoleName()}"></td>
+                                <td>
+                                    <!--                            <a class="update" th:href="@{/admin/updatePage(id=${user.getId()})}">-->
+                                    <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                            data-bs-target="#edit">
+                                        EDIT
+                                    </button>
+                                    <!--                            </a>-->
+                                </td>
+                                <td>
+                                    <!--                            <a class="delete" th:href="@{/admin/delete(id=${user.getId()})}">-->
+                                    <button type="submit" class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#delete">DELETE
+                                    </button>
+                                    <!--                            </a>-->
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                <h4>Add new user</h4>
+                <form class="col-4 mx-auto"
+                      th:action="@{/admin/saveUser}"
+                      th:object="${newUser}"
+                      method="post">
+                    <input type="hidden" name="id" th:field="*{id}">
+                    <div class="mb-3">
+                        <label for="firstname" class="form-label">First name</label>
+                        <input type="text" class="form-control" id="firstname" name="Name" th:field="*{name}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastname" class="form-label">Last name</label>
+                        <input type="text" class="form-control" id="lastname" name="Surname" th:field="*{surname}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="age" class="form-label">Age</label>
+                        <input type="number" class="form-control" id="age" name="Age" th:field="*{age}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="Email" th:field="*{email}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="Age" th:field="*{password}">
+                    </div>
+                    <select class="form-select" size="2" aria-label="Size 3 select example" name="Role"
+                            th:field="*{roleId}">
+                        <option th:each="role:${roleList}"
+                                th:value="${role.id}"
+                                th:text="${role.roleName}">
+                        </option>
+                    </select>
+                    <div class="add">
+                        <button type="submit" class="btn btn-success mt-3">Add new user</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
-        <td>
-            <a class="update" th:href="@{/admin/updatePage(id=${user.getId()})}">
-                <button type="submit" style="height: 40px; width: 90px; border-radius: 12px"> ОБНОВИТЬ</button>
-            </a>
-        </td>
-        <td>
-            <a class="delete" th:href="@{/admin/delete(id=${user.getId()})}">
-                <button type="submit" style="height: 45px; width: 85px; background-color:red; border-radius: 12px">
-                    УДАЛИТЬ
-                </button>
-            </a>
-        </td>
-        <td>
-            <a class="profile" th:href="@{/admin/profile(id=${user.getId()})}">
-                <button type="submit" style="height: 45px; width: 85px; background-color:green; border-radius: 12px">
-                    ПРОФИЛЬ
-                </button>
-            </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    </div>
+</div>
+
+<!-- ModalEdit -->
+<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit user</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="col-6 mx-auto"
+                      th:action="@{/admin/update(id=${userUpdate.getId()})}"
+                      th:object="${userUpdate}"
+                      method="post">
+                    <div class="mb-3">
+                        <label for="ID" class="form-label">ID</label>
+                        <input type="text" class="form-control" id="ID" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editFirstname" class="form-label">First name</label>
+                        <input type="text" class="form-control" id="editFirstname" th:field="${userUpdate.name}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editLastname" class="form-label">Last name</label>
+                        <input type="text" class="form-control" id="editLastname" th:field="${userUpdate.surname}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editAge" class="form-label">Age</label>
+                        <input type="number" class="form-control" id="editAge" th:field="${userUpdate.age}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editEmail" th:field="${userUpdate.email}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="editPassword" th:field="${userUpdate.password}">
+                    </div>
+                    <select class="form-select" size="2" aria-label="Size 3 select example" th:field="*{roleId}">
+                        <option th:each="role:${roleList}"
+                                th:value="${role.id}"
+                                th:text="${role.roleName}">
+                        </option>
+                    </select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Edit</button>
+            </div>
+        </div>
+    </div>
+</div><!-- Modal Delete -->
+<div class="modal fade" id="delete" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalLabel">Delete user</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="col-6 mx-auto">
+                    <div class="mb-3">
+                        <label for="deleteID" class="form-label">ID</label>
+                        <input type="text" class="form-control" id="deleteID" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deleteFirstname" class="form-label">First name</label>
+                        <input type="text" class="form-control" id="deleteFirstname" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deleteLastname" class="form-label">Last name</label>
+                        <input type="text" class="form-control" id="deleteLastname" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deleteAge" class="form-label">Age</label>
+                        <input type="number" class="form-control" id="deleteAge" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deleteEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="deleteEmail" disabled>
+                    </div>
+                    <select class="form-select" size="2" aria-label="Size 3 select example" disabled>
+                        <option value="1">ADMIN</option>
+                        <option value="2">USER</option>
+                    </select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 <input type="button" value="Добавить пользователя" class="add1  btn-outline-success"
        onclick="window.location.href = 'admin/addUser'">
 <br>
 <input type="button" value="Назад" class="add1  btn-outline-success"
        onclick="window.location.href = 'admin/adminProfile'">
-<br>
-<input type="button" value="Выйти" class="add1  btn-outline-success"
-       onclick="window.location.href = '/logout'">
-<br>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script>
+
+</script>
 </body>
 </html>

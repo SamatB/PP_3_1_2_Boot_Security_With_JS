@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
+import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
 import java.security.Principal;
@@ -15,22 +16,21 @@ import java.security.Principal;
 public class UserController {
 
     private final UserServiceImpl userService;
+    private final RoleService roleService;
 
     @Autowired
-    public UserController(UserServiceImpl userService) {
+    public UserController(UserServiceImpl userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/admin")
-    public String getAllUsers(Model model) {
+    public String getAllUsers(Model model, @RequestParam(required = false) Long id) {
         model.addAttribute("users", userService.getUsers());
+        model.addAttribute("newUser", new User());
+        model.addAttribute("roleList", roleService.getAllRoles());
+        model.addAttribute("userUpdate", userService.getUserById(id));
         return "users";
-    }
-
-    @GetMapping("/admin/addUser")
-    public String addUser(Model model) {
-        model.addAttribute("user", new User());
-        return "addUser";
     }
 
     @PostMapping("/admin/saveUser")
@@ -46,7 +46,8 @@ public class UserController {
     }
 
     @PostMapping("/admin/update")
-    public String updateUser(@ModelAttribute("userUpdate") User user, @RequestParam("id") Long id) {
+    public String updateUser(Model model ,@ModelAttribute("userUpdate") User user, @RequestParam("id") Long id) {
+        model.addAttribute("userUpdate", userService.getUserById(id));
         userService.updateUser(user, id);
         return "redirect:/admin";
     }

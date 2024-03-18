@@ -31,7 +31,13 @@ public class User implements UserDetails {
 
     private int age;
 
+    private String email;
+
     private String password;
+
+    @Transient
+    private Long roleId;
+
 
     @ManyToMany(targetEntity = Role.class,
             cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH},
@@ -48,6 +54,7 @@ public class User implements UserDetails {
                 ", name: " + name +
                 ", surname: " + surname +
                 ", age: " + age +
+                ", role: " + roles +
                 '}';
     }
 
