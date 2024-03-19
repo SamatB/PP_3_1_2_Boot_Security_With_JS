@@ -37,7 +37,7 @@
 
 <body>
 <nav class="navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="#"> with roles: ADMIN USER</a>
+    <a class="navbar-brand" href="#" > th:text="${user.email} 'with roles:' ${user.roles}" </a>
     <a type="button" class="btn btn-dark"
        onclick="window.location.href = '/logout'">Logout</a>
 </nav>
@@ -94,19 +94,16 @@
                                 <td th:text="${user.email}"></td>
                                 <td th:text="${user.roles.get(0).getRoleName()}"></td>
                                 <td>
-                                    <!--                            <a class="update" th:href="@{/admin/updatePage(id=${user.getId()})}">-->
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                             data-bs-target="#edit">
                                         EDIT
                                     </button>
-                                    <!--                            </a>-->
                                 </td>
                                 <td>
-                                    <!--                            <a class="delete" th:href="@{/admin/delete(id=${user.getId()})}">-->
                                     <button type="submit" class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#delete">DELETE
+                                            data-bs-target="#delete">
+                                        DELETE
                                     </button>
-                                    <!--                            </a>-->
                                 </td>
                             </tr>
                             </tbody>
@@ -167,39 +164,38 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="col-6 mx-auto"
-                      th:action="@{/admin/update(id=${userUpdate.getId()})}"
-                      th:object="${userUpdate}"
-                      method="post">
+                <form class="col-6 mx-auto" action="#">
+<!--                      th:action="@{/admin/update(id=${us})}"-->
+<!--                      th:object="${userUpdate}"-->
+<!--                      th:method="post">-->
+
                     <div class="mb-3">
                         <label for="ID" class="form-label">ID</label>
-                        <input type="text" class="form-control" id="ID" disabled>
+                        <input type="text" class="form-control" id="ID"  disabled>
                     </div>
                     <div class="mb-3">
                         <label for="editFirstname" class="form-label">First name</label>
-                        <input type="text" class="form-control" id="editFirstname" th:field="${userUpdate.name}">
+                        <input type="text" class="form-control" id="editFirstname">
                     </div>
                     <div class="mb-3">
                         <label for="editLastname" class="form-label">Last name</label>
-                        <input type="text" class="form-control" id="editLastname" th:field="${userUpdate.surname}">
+                        <input type="text" class="form-control" id="editLastname">
                     </div>
                     <div class="mb-3">
                         <label for="editAge" class="form-label">Age</label>
-                        <input type="number" class="form-control" id="editAge" th:field="${userUpdate.age}">
+                        <input type="number" class="form-control" id="editAge">
                     </div>
                     <div class="mb-3">
                         <label for="editEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="editEmail" th:field="${userUpdate.email}">
+                        <input type="email" class="form-control" id="editEmail">
                     </div>
                     <div class="mb-3">
                         <label for="editPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="editPassword" th:field="${userUpdate.password}">
+                        <input type="password" class="form-control" id="editPassword">
                     </div>
-                    <select class="form-select" size="2" aria-label="Size 3 select example" th:field="*{roleId}">
-                        <option th:each="role:${roleList}"
-                                th:value="${role.id}"
-                                th:text="${role.roleName}">
-                        </option>
+                    <select class="form-select" size="2" aria-label="Size 3 select example">
+                        <option value="1">ADMIN</option>
+                        <option value="2">USER</option>
                     </select>
                 </form>
             </div>
@@ -218,7 +214,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="col-6 mx-auto">
+                <form class="col-6 mx-auto" action="#">
                     <div class="mb-3">
                         <label for="deleteID" class="form-label">ID</label>
                         <input type="text" class="form-control" id="deleteID" disabled>
@@ -229,7 +225,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="deleteLastname" class="form-label">Last name</label>
-                        <input type="text" class="form-control" id="deleteLastname" disabled>
+                        <input type="text" class="form-control" id="deleteLastname"  disabled>
                     </div>
                     <div class="mb-3">
                         <label for="deleteAge" class="form-label">Age</label>

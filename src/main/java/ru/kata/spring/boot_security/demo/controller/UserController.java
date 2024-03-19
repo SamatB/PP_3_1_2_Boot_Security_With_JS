@@ -25,11 +25,12 @@ public class UserController {
     }
 
     @GetMapping("/admin")
-    public String getAllUsers(Model model, @RequestParam(required = false) Long id) {
+    public String getAllUsers(Model model, Principal principal) {
         model.addAttribute("users", userService.getUsers());
         model.addAttribute("newUser", new User());
         model.addAttribute("roleList", roleService.getAllRoles());
-        model.addAttribute("userUpdate", userService.getUserById(id));
+        User user = userService.getUserByName(principal.getName());
+        model.addAttribute("user", user);
         return "users";
     }
 
@@ -46,8 +47,8 @@ public class UserController {
     }
 
     @PostMapping("/admin/update")
-    public String updateUser(Model model ,@ModelAttribute("userUpdate") User user, @RequestParam("id") Long id) {
-        model.addAttribute("userUpdate", userService.getUserById(id));
+    public String updateUser(Model model, @ModelAttribute("user") User user, @RequestParam("id") Long id) {
+        userService.getUserById(id);
         userService.updateUser(user, id);
         return "redirect:/admin";
     }
