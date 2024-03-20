@@ -1,5 +1,5 @@
-INSERT INTO users(name, surname, age, password)
-VALUES ('admin', null, 23, '$2a$12$W2QcUHf.ihPARMl/x.UcvuJSlxfWp8c8fT2lHqzzQycepAM3gEZqu');
+INSERT INTO users(name, surname, age, password, email)
+VALUES ('admin', 'adminov', 23, '$2a$12$W2QcUHf.ihPARMl/x.UcvuJSlxfWp8c8fT2lHqzzQycepAM3gEZqu', 'admin@gmail.com');
 
 INSERT INTO roles(role_name)
 values ('ADMIN'),

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
@@ -62,11 +63,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user, Long id) {
-        User userUpdate = userRepository.findById(id).get();
+    public void updateUser(User user) {
+        User userUpdate = userRepository.findById(user.getId()).get();
         userUpdate.setName(user.getName());
         userUpdate.setSurname(user.getSurname());
         userUpdate.setAge(user.getAge());
+        if (!userUpdate.getPassword().isEmpty()) {
+            userUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        userUpdate.setRoles(user.getRoles());
         userRepository.save(userUpdate);
     }
 }
