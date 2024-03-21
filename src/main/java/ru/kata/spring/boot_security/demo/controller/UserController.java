@@ -58,31 +58,13 @@ public class UserController {
         return "redirect:/admin/";
     }
 
-
-
-    @GetMapping("/admin/profile")
-    public String userProfile(Model model, @RequestParam Long id) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "userProfile";
-    }
-
-    @GetMapping("/user/usersProfile")
+    @GetMapping("/user")
     public String usersProfile(Model model, Principal principal) {
         User userByName = userService.getUserByName(principal.getName());
         model.addAttribute("user", userByName);
         return "usersProfile";
     }
 
-    @GetMapping("/admin/adminProfile")
-    public String adminProfile(Model model, Principal principal) {
-        User user = userService.getUserByName(principal.getName());
-        model.addAttribute("user", user);
-        return "adminProfile";
-    }
 
-    @GetMapping("/user")
-    public String userPage() {
-        return "user";
-    }
 
 }
