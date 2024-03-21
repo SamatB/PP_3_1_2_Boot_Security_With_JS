@@ -54,6 +54,7 @@ public class User implements UserDetails {
                 ", name: " + name +
                 ", surname: " + surname +
                 ", age: " + age +
+                ", email: " + email +
                 ", role: " + roles +
                 '}';
     }
@@ -74,7 +75,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override

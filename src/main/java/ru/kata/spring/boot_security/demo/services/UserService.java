@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.services;
 
-import org.springframework.validation.annotation.Validated;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.List;
@@ -10,8 +9,7 @@ public interface UserService {
 
     List<User> getUsers();
 
-    User getUserById(Long id);
-    User getUserByName(String name);
+    User getUserByEmail(String name);
 
     void deleteUser(Long id);
 

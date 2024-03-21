@@ -4,14 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -20,15 +18,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final RoleService roleService;
-
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, RoleService roleService, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -47,14 +42,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-    @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
 
     @Override
-    public User getUserByName(String name) {
-        return userRepository.findByName(name).get();
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).get();
     }
 
     @Override
@@ -68,9 +59,10 @@ public class UserServiceImpl implements UserService {
         userUpdate.setName(user.getName());
         userUpdate.setSurname(user.getSurname());
         userUpdate.setAge(user.getAge());
-//        if (userUpdate.getPassword().isEmpty()) {
-//            userUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
-//        }
+        userUpdate.setEmail(user.getEmail());
+        if (!user.getPassword().isEmpty()) {
+            userUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userUpdate.setRoles(user.getRoles());
         userRepository.save(userUpdate);
     }

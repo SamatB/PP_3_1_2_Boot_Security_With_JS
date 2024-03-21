@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>All Users</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <style>
         body {
             background: whitesmoke;
@@ -39,7 +39,7 @@
 <nav class="navbar fixed-top navbar-dark bg-dark">
     <div class="container-fluid">
            <span class="navbar-brand mb-0 h1"
-                 th:text="${user.getEmail()} + ' with role: ' + ${#strings.replace(#strings.arrayJoin(user.getRoles(), ', '), 'ROLE_', '')}">
+                 th:text="${user.getEmail()} + ' with role: ' + ${#strings.replace(#strings.arrayJoin(user.getRoles(), ', '), 'ROLE_', '').replace(',', ' ')}">
            </span>
         <a type="button" class="btn btn-dark"
            onclick="window.location.href = '/logout'">Logout</a>
@@ -101,7 +101,7 @@
                                         <td th:text="${user.surname}"></td>
                                         <td th:text="${user.age}"></td>
                                         <td th:text="${user.email}"></td>
-                                        <td th:text="${user.roles.get(0).getRoleName()}"></td>
+                                        <td th:text="${#strings.replace(user.getRoles().toString(), '[','').replace(']','').replace('ROLE_', '').replace(',', ' ')}"></td>
 
                                         <!-- ModalEdit -->
                                         <td>
@@ -124,11 +124,12 @@
                                                         <form class="col-6 mx-auto"
                                                               th:action="@{/admin/update(id=${user.getId()})}"
                                                               th:object="${user}"
-                                                              th:method="PATCH">
+                                                              th:method="POST">
                                                             <div class="modal-body">
                                                                 <div class="mb-3">
                                                                     <label for="ID" class="form-label">ID</label>
                                                                     <input type="text" class="form-control" id="ID"
+                                                                           name="id"
                                                                            th:value="${user.getId()}" disabled>
                                                                 </div>
                                                                 <div class="mb-3">
@@ -136,19 +137,22 @@
                                                                         name</label>
                                                                     <input type="text" class="form-control"
                                                                            id="editFirstname"
-                                                                           th:value="${user.getUsername()}">
+                                                                           name="name"
+                                                                           th:value="${user.getName()}">
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="editLastname" class="form-label">Last
                                                                         name</label>
                                                                     <input type="text" class="form-control"
                                                                            id="editLastname"
+                                                                           name="surname"
                                                                            th:value="${user.getSurname()}">
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label for="editAge" class="form-label">Age</label>
                                                                     <input type="number" class="form-control"
                                                                            id="editAge"
+                                                                           name="age"
                                                                            th:value="${user.getAge()}">
                                                                 </div>
                                                                 <div class="mb-3">
@@ -156,6 +160,7 @@
                                                                            class="form-label">Email</label>
                                                                     <input type="email" class="form-control"
                                                                            id="editEmail"
+                                                                           name="email"
                                                                            th:value="${user.getEmail()}">
                                                                 </div>
                                                                 <div class="mb-3">
@@ -163,17 +168,21 @@
                                                                            class="form-label">Password</label>
                                                                     <input type="password" class="form-control"
                                                                            id="editPassword"
-                                                                           th:value="${user.getPassword()}">
+                                                                           name="password">
                                                                 </div>
-                                                                <label for="roles" class="form-label">Role</label>
-                                                                <select class="form-select" size="2"
-                                                                        aria-label="Size 3 select example" id="roles">
-                                                                    <option th:each="role:${roleList}"
-                                                                            th:value="${role.id}"
-                                                                            th:text="${role.roleName}"
-                                                                            th:selected="${user.roles.contains(role)}">
-                                                                    </option>
-                                                                </select>
+                                                                <div class="mb-3">
+                                                                    <label for="roles" class="form-label">Role</label>
+                                                                    <select class="form-select" size="2"
+                                                                            aria-label="Size 3 select example"
+                                                                            id="roles"
+                                                                            name="roles">
+                                                                        <option th:each="role:${roleList}"
+                                                                                th:value="${role.id}"
+                                                                                th:text="${role.roleName}"
+                                                                                th:selected="${user.roles.contains(role)}">
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
@@ -188,7 +197,6 @@
                                                 </div>
                                             </div>
                                         </td>
-
 
                                         <!-- Modal Delete -->
                                         <td>
@@ -209,12 +217,13 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <form class="col-6 mx-auto"
-                                                              th:method="DELETE"
+                                                              th:method="POST"
                                                               th:action="@{/admin/delete(id=${user.getId()})}"
                                                               th:object="${user}">
                                                             <div class="mb-3">
                                                                 <label for="deleteID" class="form-label">ID</label>
                                                                 <input type="text" class="form-control" id="deleteID"
+                                                                       name="id"
                                                                        th:value="${user.getId()}" disabled>
                                                             </div>
                                                             <div class="mb-3">
@@ -222,6 +231,7 @@
                                                                     name</label>
                                                                 <input type="text" class="form-control"
                                                                        id="deleteFirstname"
+                                                                       name="name"
                                                                        th:value="${user.getName()}"
                                                                        disabled>
                                                             </div>
@@ -230,6 +240,7 @@
                                                                     name</label>
                                                                 <input type="text" class="form-control"
                                                                        id="deleteLastname"
+                                                                       name="surname"
                                                                        th:value="${user.getSurname()}"
                                                                        disabled>
                                                             </div>
@@ -237,6 +248,7 @@
                                                                 <label for="deleteAge" class="form-label">Age</label>
                                                                 <input type="number" class="form-control" id="deleteAge"
                                                                        th:value="${user.getAge()}"
+                                                                       name="age"
                                                                        disabled>
                                                             </div>
                                                             <div class="mb-3">
@@ -244,35 +256,35 @@
                                                                        class="form-label">Email</label>
                                                                 <input type="email" class="form-control"
                                                                        id="deleteEmail"
+                                                                       name="email"
                                                                        th:value="${user.getEmail()}"
                                                                        disabled>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label for="deleteRoles" class="form-label">Role</label>
-                                                                <input type="email" class="form-control"
-                                                                       id="deleteRoles"
-                                                                       th:value="${user.getRoles()}"
-                                                                       disabled>
+                                                                <select class="form-select" size="2" aria-label="Size 3 select example" name="Role"
+                                                                        id="deleteRoles"
+                                                                        th:field="*{roleId}">
+                                                                    <option th:each="role:${roleList}"
+                                                                            th:value="${role.id}"
+                                                                            th:text="${role.roleName}" disabled>
+                                                                    </option>
+                                                                </select>
                                                             </div>
-                                                            <!--                                                    <select class="form-select" size="2"-->
-                                                            <!--                                                            aria-label="Size 3 select example" disabled>-->
-                                                            <!--                                                        <option value="1">ADMIN</option>-->
-                                                            <!--                                                        <option value="2">USER</option>-->
-                                                            <!--                                                    </select>-->
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                                <button type="submit" class="btn btn-danger" value="Delete">
+                                                                    Delete
+                                                                </button>
+                                                            </div>
                                                         </form>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">
-                                                            Close
-                                                        </button>
-                                                        <button type="button" class="btn btn-danger">Delete</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </tr>
                                     </tbody>
                                 </table>
@@ -323,13 +335,11 @@
                             </div>
                         </form>
                     </div>
-
                 </div>
-
             </div>
 
             <!-- User's page which belows Admin -->
-                <div class="tab-pane show active" id="userSide" role="tabpanel" aria-labelledby="list-profile-list">
+            <div class="tab-pane show" id="userSide" role="tabpanel" aria-labelledby="list-profile-list">
                 <h2>User information-page</h2>
                 <div class="tab-content" id="userTabContent">
                     <div class="tab-pane fade show active" id="user-home-tab-pane" role="tabpanel"
@@ -358,7 +368,7 @@
                                         <td th:text="${user.surname}"></td>
                                         <td th:text="${user.age}"></td>
                                         <td th:text="${user.email}"></td>
-                                        <td th:text="${#strings.replace(user.getRoles(), '[','').replace(']', '')}"></td>
+                                        <td th:text="${#strings.replace(user.getRoles().toString(), '[','').replace(']','').replace('ROLE_', '').replace(',', ' ')}"></td>
                                     </tr>
                                     </tbody>
                                 </table>

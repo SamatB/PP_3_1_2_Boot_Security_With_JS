@@ -1,21 +1,14 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserServiceImpl;
 
 import java.security.Principal;
-import java.security.Security;
 
 @Controller
 @RequestMapping()
@@ -32,7 +25,7 @@ public class UserController {
 
     @GetMapping("/admin")
     public String getAllUsers(Model model, Principal principal) {
-        User user = userService.getUserByName(principal.getName());
+        User user = userService.getUserByEmail(principal.getName());
         model.addAttribute("user", user);
         model.addAttribute("users", userService.getUsers());
         model.addAttribute("newUser", new User());
@@ -46,13 +39,13 @@ public class UserController {
         return "redirect:/admin/";
     }
 
-    @PatchMapping("/admin/update")
-    public String updateUser(@ModelAttribute("user") User user, @RequestParam Long id) {
+    @PostMapping("/admin/update")
+    public String updateUser(@ModelAttribute("user") User user) {
         userService.updateUser(user);
         return "redirect:/admin/";
     }
 
-    @DeleteMapping("/admin/delete")
+    @PostMapping("/admin/delete")
     public String deleteUser(@RequestParam Long id) {
         userService.deleteUser(id);
         return "redirect:/admin/";
@@ -60,11 +53,9 @@ public class UserController {
 
     @GetMapping("/user")
     public String usersProfile(Model model, Principal principal) {
-        User userByName = userService.getUserByName(principal.getName());
-        model.addAttribute("user", userByName);
+        User userByEmail = userService.getUserByEmail(principal.getName());
+        model.addAttribute("user", userByEmail);
         return "usersProfile";
     }
-
-
 
 }

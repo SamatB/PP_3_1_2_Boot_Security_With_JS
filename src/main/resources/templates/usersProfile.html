@@ -36,7 +36,7 @@
 <div class="main">
     <div class="col-3 sidebar">
         <div class="list-group" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list"
+            <a class="list-group-item list-group-item-action active" id="list-profile-list" data-bs-toggle="list"
                href="/user" role="tab" aria-controls="list-home">User</a>
         </div>
 
@@ -72,7 +72,7 @@
                                         <td th:text="${user.surname}"></td>
                                         <td th:text="${user.age}"></td>
                                         <td th:text="${user.email}"></td>
-                                        <td th:text="${#strings.replace(user.getRoles(), '[','').replace(']', '')}"></td>
+                                        <td th:text="${#strings.replace(user.getRoles().toString(), '[','').replace(']','').replace('ROLE_', '').replace(',', ' ')}"></td>
                                     </tr>
                                     </tbody>
                                 </table>

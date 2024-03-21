@@ -19,17 +19,8 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
-    public void createRole(String roleName) {
-        Role role = new Role();
-        role.setRoleName(roleName);
-        roleRepository.save(role);
-    }
-
-    public Role findByName(String roleName) {
-        return roleRepository.findByRoleName(roleName);
-    }
-
     public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
+
 }
