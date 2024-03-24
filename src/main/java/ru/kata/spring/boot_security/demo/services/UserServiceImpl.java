@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.exceptions.UserNotFoundException;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
@@ -54,8 +55,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
-        User userUpdate = userRepository.findById(user.getId()).get();
+    public void updateUser(Long id, User user) {
+        User userUpdate = userRepository.findById(id).get();
         userUpdate.setName(user.getName());
         userUpdate.setSurname(user.getSurname());
         userUpdate.setAge(user.getAge());
@@ -65,5 +66,11 @@ public class UserServiceImpl implements UserService {
         }
         userUpdate.setRoles(user.getRoles());
         userRepository.save(userUpdate);
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException(String.format("User with id: %s does not exist", id)));
     }
 }
