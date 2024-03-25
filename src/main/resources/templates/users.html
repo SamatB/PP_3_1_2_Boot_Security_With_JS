@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>All Users</title>
@@ -34,7 +34,6 @@
         }
     </style>
 </head>
-
 <body>
 <nav class="navbar fixed-top navbar-dark bg-dark">
     <div class="container-fluid">
@@ -52,7 +51,6 @@
             <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list"
                href="#userSide" role="tab" aria-controls="userSide">User</a>
         </div>
-
     </div>
     <div class="col-8">
         <div class="tab-content bg-light" id="v-pills-tabContent">
@@ -113,8 +111,8 @@
                                                 <form class="col-6 mx-auto" id="editForm">
                                                     <div class="modal-body">
                                                         <div class="mb-3">
-                                                            <label for="ID" class="form-label">ID</label>
-                                                            <input type="text" class="form-control" id="ID"
+                                                            <label for="editID" class="form-label">ID</label>
+                                                            <input type="text" class="form-control" id="editID"
                                                                    name="id"
                                                                    disabled>
                                                         </div>
@@ -157,7 +155,8 @@
                                                             <select class="form-select" size="2"
                                                                     aria-label="Size 3 select example"
                                                                     id="editRoles"
-                                                                    name="roles">
+                                                                    name="roles"
+                                                                    required>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -165,7 +164,7 @@
                                                         <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal" id="editClose">Close
                                                         </button>
-                                                        <button type="submit" class="btn btn-primary" name="id">
+                                                        <button type="submit" class="btn btn-primary">
                                                             Edit
                                                         </button>
                                                     </div>
@@ -228,7 +227,8 @@
                                                             <label for="deleteRoles" class="form-label">Role</label>
                                                             <select class="form-select" size="2"
                                                                     aria-label="Size 3 select example" name="roles"
-                                                                    id="deleteRoles">
+                                                                    id="deleteRoles"
+                                                                    disabled>
                                                             </select>
                                                         </div>
                                                         <div class="modal-footer">
@@ -276,7 +276,8 @@
                             </div>
                             <label for="newRoles" class="form-label">Role</label>
                             <select class="form-select" size="2" aria-label="Size 3 select example" name="roles"
-                                    id="newRoles">
+                                    id="newRoles"
+                                    required>
                             </select>
                             <div class="add">
                                 <button type="submit" class="btn btn-success mt-3">Add new user</button>

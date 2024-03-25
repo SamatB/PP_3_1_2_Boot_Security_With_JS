@@ -66,8 +66,16 @@ public class UserServiceImpl implements UserService {
         userUpdate.setEmail(user.getEmail());
         if (!user.getPassword().isEmpty()) {
             userUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            userUpdate.setPassword(userUpdate.getPassword());
         }
-        userUpdate.setRoles(user.getRoles());
+        List<Role> usersRole = user.getRoles();
+        List<Role> roles = new ArrayList<>();
+        for (Role role : usersRole) {
+            Role role1 = roleRepository.findById(role.getId()).orElseThrow(() -> new RuntimeException("Role not found"));
+            roles.add(role1);
+        }
+        userUpdate.setRoles(roles);
         userRepository.save(userUpdate);
     }
 
@@ -76,4 +84,5 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(
                 () -> new UserNotFoundException(String.format("User with id: %s does not exist", id)));
     }
+
 }

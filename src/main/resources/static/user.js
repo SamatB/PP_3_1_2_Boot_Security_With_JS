@@ -11,15 +11,17 @@ function getAuthUser() {
 
             info += `
             <tr>
-                <td>${user.id}"</td>
-                <td>${user.name}"</td>
-                <td>${user.surname}"</td>
-                <td>${user.age}"</td>
-                <td>${user.email}"</td>
-                <td>${role}"</td> 
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.surname}</td>
+                <td>${user.age}</td>
+                <td>${user.email}</td>
+                <td>${role}</td> 
             </tr>`;
             userTable.innerHTML = info;
-            userNavBar.innerHTML = `<span>${user.email} with roles: ${role}</span>`;
+            userNavBar.innerHTML = `<b></b><span>${user.email}</span></b> 
+                                            <span>with roles:</span>
+                                            <span> ${role}</span>`;
         });
 }
 
@@ -28,7 +30,8 @@ getAuthUser();
 function rolesFromArray(roles) {
     let roleFrom = '';
     for (const role of roles) {
-        roleFrom += role.name.toString().replace('ROLE_', '').replace(', ', '');
+        roleFrom += role.roleName.toString().replace('ROLE_', '');
     }
     return roleFrom;
 }
+

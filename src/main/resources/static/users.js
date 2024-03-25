@@ -72,7 +72,7 @@ function editUser() {
 
         let editRoles = [];
         for (let i = 0; i < editForm.roles.options.length; i++) {
-            if (editForm.roles.options[i].selected()) {
+            if (editForm.roles.options[i].selected) {
                 editRoles.push({
                     id: editForm.roles.options[i].value,
                     name: 'ROLE_' + editForm.roles.options[i].text
@@ -85,7 +85,7 @@ function editUser() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                id: editForm.id.value,
+                // id: editForm.id.value,
                 name: editForm.name.value,
                 surname: editForm.surname.value,
                 age: editForm.age.value,
@@ -161,8 +161,6 @@ function rolesOfDeleteUser() {
 window.addEventListener('load', rolesOfDeleteUser);
 
 //AllUsers===============================================================
-
-
 function getAllUsers() {
     fetch('http://localhost:8080/admin/users')
         .then(response => {
@@ -176,7 +174,6 @@ function getAllUsers() {
                     for (let user of users) {
 
                         rolesString = rolesFromArray(user.roles);
-
                         dataOfUsers += `<tr>
                         <td>${user.id}</td>
                         <td>${user.name}</td>              
@@ -184,7 +181,6 @@ function getAllUsers() {
                         <td>${user.age}</td>
                         <td>${user.email}</td>
                         <td>${rolesString}</td>
-
 
                         <td>
                           <button type="button"
@@ -195,7 +191,6 @@ function getAllUsers() {
                                 Edit
                             </button>
                         </td>
-
 
                         <td>
                             <button type="button" 
@@ -252,19 +247,19 @@ function getAuthAdmin() {
 }
 
 async function getUserById(id) {
-    let response = await fetch('http://localhost:8080/admin/users' + id);
+    let response = await fetch('http://localhost:8080/admin/users/' + id);
     return await response.json();
 }
 
 async function openModal(form, modal, id) {
     modal.show();
     let user = await getUserById(id);
+    console.log(form.id)
     form.id.value = user.id;
     form.name.value = user.name;
     form.surname.value = user.surname;
     form.age.value = user.age;
     form.email.value = user.email;
-    form.password.value = user.password;
     form.roles.value = user.roles;
 }
 
