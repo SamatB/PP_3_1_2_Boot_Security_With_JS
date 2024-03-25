@@ -80,7 +80,7 @@ function editUser() {
             }
         }
         fetch('http://localhost:8080/admin/update/' + editForm.id.value, {
-            method: 'PATCH',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
