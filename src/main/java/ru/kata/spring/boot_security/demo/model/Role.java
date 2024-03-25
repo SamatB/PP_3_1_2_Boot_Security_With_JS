@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,9 +23,9 @@ public class Role implements GrantedAuthority {
 
     private String roleName;
 
-    @ManyToMany(targetEntity = User.class, mappedBy = "roles",
-            cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
-    private List<User> users;
+//    @ManyToMany(mappedBy = "roles",
+//            cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH})
+//    private List<User> users;
 
     @Override
     public String getAuthority() {

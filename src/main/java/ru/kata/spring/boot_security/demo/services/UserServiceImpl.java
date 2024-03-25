@@ -30,9 +30,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
-        Role role = roleRepository.findById(user.getRoleId()).orElseThrow(() -> new RuntimeException("Role not found"));
+        List<Role> usersRole = user.getRoles();
         List<Role> roles = new ArrayList<>();
-        roles.add(role);
+        for (Role role : usersRole) {
+            Role role1 = roleRepository.findById(role.getId()).orElseThrow(() -> new RuntimeException("Role not found"));
+            roles.add(role1);
+        }
         user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);

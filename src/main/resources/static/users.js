@@ -7,11 +7,12 @@ function createUser() {
         evnt.preventDefault();
 
         let userRole = [];
+        console.log(addUser.roles)
         for (let i = 0; i < addUser.roles.length; i++) {
-            if (addUser.roles.options[i].selected()) {
+            if (addUser.roles.options[i].selected) {
                 userRole.push({
                     id: addUser.roles.options[i].value,
-                    name: 'ROLE_' + addUser.Role.options[i].text()
+                    roleName: 'ROLE_' + addUser.roles.options[i].text
                 })
             }
         }
@@ -21,7 +22,7 @@ function createUser() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: addUser.Name.value,
+                name: addUser.name.value,
                 surname: addUser.surname.value,
                 age: addUser.age.value,
                 email: addUser.email.value,
@@ -38,14 +39,14 @@ function createUser() {
 
 function rolesOfUser() {
     let selectAdd = document.getElementById('newRoles')
-    selectAdd.innerHTML = '';
+    // selectAdd.innerHTML = '';
     fetch('http://localhost:8080/admin/roles')
         .then(res => res.json())
         .then(roles => {
             roles.forEach(role => {
                 let variable = document.createElement('option');
                 variable.value = role.id;
-                variable.text = role.name.toString().replace('ROLE_', '');
+                variable.text = role.roleName.toString().replace('ROLE_', '');
                 selectAdd.appendChild(variable);
             })
         })
@@ -108,7 +109,7 @@ function rolesOfEditUser() {
             roles.forEach(role => {
                 let variable = document.createElement('option');
                 variable.value = role.id;
-                variable.text = role.name.toString().replace('ROLE_', '');
+                variable.text = role.roleName.toString().replace('ROLE_', '');
                 selectEdit.appendChild(variable);
             })
         })
@@ -150,7 +151,7 @@ function rolesOfDeleteUser() {
             roles.forEach(role => {
                 let variable = document.createElement('option');
                 variable.value = role.id;
-                variable.text = role.name.toString().replace('ROLE_', '');
+                variable.text = role.roleName.toString().replace('ROLE_', '');
                 selectDelete.appendChild(variable);
             })
         })
@@ -160,37 +161,54 @@ function rolesOfDeleteUser() {
 window.addEventListener('load', rolesOfDeleteUser);
 
 //AllUsers===============================================================
-const users = document.getElementById("usersTable");
+
 
 function getAllUsers() {
     fetch('http://localhost:8080/admin/users')
         .then(response => {
             response.json()
-                .then(data => {
-                    users.innerHTML = data.map(user => {
-                        let role = rolesFromArray(user.roles);
-                        return `
-                         <tr>
-                            <td>${user.id}</td>
-                            <td>${user.name}</td>
-                            <td>${user.surname}</td>
-                            <td>${user.age}</td>
-                            <td>${user.email}</td>
-                            <td>${role}</td>
-                            
-                            <td>
-                                <button type="button" class="btn btn-info" 
-                                        data-bs-toggle="modal" data-bs-target="#editModal"
-                                        onclick="editModal(${user.id})">EDIT</button>
-                            </td>
-                            <td>
-                                <button type="submit" class="btn btn-danger" 
-                                        data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                        onclick="deleteModal(${user.id})">DELETE
-                                        </button>
-                            </td>
-                        </tr>`;
-                    });
+                .then(function (users) {
+                    let dataOfUsers = '';
+                    let rolesString = '';
+
+                    const tableUsers = document.getElementById('usersTable');
+
+                    for (let user of users) {
+
+                        rolesString = rolesFromArray(user.roles);
+
+                        dataOfUsers += `<tr>
+                        <td>${user.id}</td>
+                        <td>${user.name}</td>              
+                        <td>${user.surname}</td>
+                        <td>${user.age}</td>
+                        <td>${user.email}</td>
+                        <td>${rolesString}</td>
+
+
+                        <td>
+                          <button type="button"
+                          class="btn btn-info"
+                          data-bs-toogle="modal"
+                          data-bs-target="#editModal"
+                          onclick="editModal(${user.id})">
+                                Edit
+                            </button>
+                        </td>
+
+
+                        <td>
+                            <button type="button" 
+                            class="btn btn-danger" 
+                            data-toggle="modal" 
+                            data-target="#deleteModal" 
+                            onclick="deleteModal(${user.id})">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>`;
+                    }
+                    tableUsers.innerHTML = dataOfUsers;
                 })
         })
 }
@@ -200,7 +218,7 @@ getAllUsers();
 function rolesFromArray(roles) {
     let roleFrom = '';
     for (const role of roles) {
-        roleFrom += role.name.toString().replace('ROLE_', '').replace(', ', '');
+        roleFrom += role.roleName.toString().replace('ROLE_', ' ');
     }
     return roleFrom;
 }
@@ -231,7 +249,6 @@ function getAuthAdmin() {
                                                 <span>with roles: </span>
                                                 <span>${role}</span>`;
         });
-
 }
 
 async function getUserById(id) {

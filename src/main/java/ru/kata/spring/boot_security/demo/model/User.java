@@ -55,13 +55,11 @@ public class User implements UserDetails {
     private Long roleId;
 
 
-    @ManyToMany(targetEntity = Role.class,
-            cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH},
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.DETACH},
             fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    @JsonIgnore
     private List<Role> roles;
 
     @Override
